@@ -10,7 +10,6 @@ def get_prices():
         "x-rapidapi-host": "sky-scrapper.p.rapidapi.com"
     }
 
-    # Ejemplo: Montevideo → Nueva York
     params = {
         "originSkyId": "MVD",
         "destinationSkyId": "JFK",
@@ -20,9 +19,14 @@ def get_prices():
     }
 
     response = requests.get(url, headers=headers, params=params).json()
-    price1 = float(response["data"][0]["price"]["amount"])
+    print(response)  # 👈 Esto mostrará la respuesta completa en los logs
 
-    # Por ahora dejamos valores de prueba para los otros tramos
+    try:
+        price1 = float(response["data"][0]["price"]["amount"])
+    except (KeyError, IndexError):
+        price1 = -1  # Valor de error si no hay datos
+
+    # Valores de prueba para los otros tramos
     price2 = 180
     price3 = 650
 
