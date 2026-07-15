@@ -1,19 +1,24 @@
-# main.py
-# Punto de entrada del bot
-
-from telegram_bot import send_daily_report
-from flights_provider import get_prices
-from analysis import analyze_prices
-import utils
+import os
+import requests
 
 def main():
-    # Obtener precios
-    prices = get_prices()
-    # Analizar variaciones
-    report = analyze_prices(prices)
-    # Enviar informe por Telegram
-    send_daily_report(report)
+    api_key = os.environ.get("KIWI_API_KEY")
+    print("API KEY:", api_key)  # 👈 Verifica que no sea None
+
+    url = "https://api.tequila.kiwi.com/v2/search"
+    headers = {"apikey": api_key}
+
+    params = {
+        "fly_from": "MVD",
+        "fly_to": "NYC",
+        "date_from": "01/08/2026",
+        "date_to": "01/08/2026",
+        "adults": 1,
+        "curr": "USD"
+    }
+
+    response = requests.get(url, headers=headers, params=params).json()
+    print("Response:", response)
 
 if __name__ == "__main__":
     main()
-    
