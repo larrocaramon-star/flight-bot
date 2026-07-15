@@ -1,7 +1,3 @@
-# flights_provider.py
-import os
-import requests
-
 def get_prices():
     api_key = os.environ.get("SKYSCANNER_API_KEY")
     url = "https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchFlights"
@@ -19,19 +15,23 @@ def get_prices():
     }
 
     response = requests.get(url, headers=headers, params=params).json()
-    print(response)  # 👈 Esto mostrará la respuesta completa en los logs
+    print(response)  # 👈 Para ver qué campos trae
 
     try:
         price1 = float(response["data"][0]["price"]["amount"])
+        link1 = response["data"][0].get("deeplink", "No disponible")
     except (KeyError, IndexError):
-        price1 = -1  # Valor de error si no hay datos
+        price1 = -1
+        link1 = "No disponible"
 
-    # Valores de prueba para los otros tramos
+    # Por ahora valores de prueba para los otros tramos
     price2 = 180
+    link2 = "No disponible"
     price3 = 650
+    link3 = "No disponible"
 
     return {
-        "MVD-JFK": price1,
-        "JFK-MIA": price2,
-        "MIA-MVD": price3
+        "MVD-JFK": {"price": price1, "link": link1},
+        "JFK-MIA": {"price": price2, "link": link2},
+        "MIA-MVD": {"price": price3, "link": link3}
     }
