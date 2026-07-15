@@ -11,8 +11,8 @@ def get_prices():
     params1 = {
         "fly_from": "MVD",
         "fly_to": "NYC",
-        "date_from": "01/02/2027",
-        "date_to": "01/02/2027",
+        "date_from": "01/08/2026",
+        "date_to": "01/08/2026",
         "adults": 3,
         "curr": "USD"
     }
