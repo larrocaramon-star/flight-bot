@@ -7,46 +7,46 @@ def get_prices():
     url = "https://api.tequila.kiwi.com/v2/search"
     headers = {"apikey": api_key}
 
-    # Tramo 1: Montevideo → Nueva York
+    # Tramo 1: Montevideo → Nueva York (agosto 2026)
     params1 = {
         "fly_from": "MVD",
-        "fly_to": "JFK",
-        "date_from": "01/02/2027",
-        "date_to": "01/02/2027",
+        "fly_to": "NYC",  # NYC agrupa todos los aeropuertos de Nueva York
+        "date_from": "01/08/2026",
+        "date_to": "01/08/2026",
         "adults": 3,
         "curr": "USD"
     }
     response1 = requests.get(url, headers=headers, params=params1).json()
-    print("MVD-JFK:", response1)
+    print("MVD-NYC:", response1)
     try:
         price1 = float(response1["data"][0]["price"])
         link1 = response1["data"][0].get("deep_link", "No disponible")
     except (KeyError, IndexError):
         price1, link1 = -1, "No disponible"
 
-    # Tramo 2: Nueva York → Miami
+    # Tramo 2: Nueva York → Miami (agosto 2026)
     params2 = {
-        "fly_from": "JFK",
+        "fly_from": "NYC",
         "fly_to": "MIA",
-        "date_from": "05/02/2027",
-        "date_to": "05/02/2027",
+        "date_from": "05/08/2026",
+        "date_to": "05/08/2026",
         "adults": 3,
         "curr": "USD"
     }
     response2 = requests.get(url, headers=headers, params=params2).json()
-    print("JFK-MIA:", response2)
+    print("NYC-MIA:", response2)
     try:
         price2 = float(response2["data"][0]["price"])
         link2 = response2["data"][0].get("deep_link", "No disponible")
     except (KeyError, IndexError):
         price2, link2 = -1, "No disponible"
 
-    # Tramo 3: Miami → Montevideo
+    # Tramo 3: Miami → Montevideo (agosto 2026)
     params3 = {
         "fly_from": "MIA",
         "fly_to": "MVD",
-        "date_from": "10/02/2027",
-        "date_to": "10/02/2027",
+        "date_from": "10/08/2026",
+        "date_to": "10/08/2026",
         "adults": 3,
         "curr": "USD"
     }
@@ -59,7 +59,7 @@ def get_prices():
         price3, link3 = -1, "No disponible"
 
     return {
-        "MVD-JFK": {"price": price1, "link": link1},
-        "JFK-MIA": {"price": price2, "link": link2},
+        "MVD-NYC": {"price": price1, "link": link1},
+        "NYC-MIA": {"price": price2, "link": link2},
         "MIA-MVD": {"price": price3, "link": link3}
     }
