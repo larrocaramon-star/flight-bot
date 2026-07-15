@@ -2,7 +2,7 @@ import os
 import requests
 
 def get_prices():
-    api_key = os.environ.get("KIWI_API_KEY")  # tu secreto en GitHub
+    api_key = os.environ.get("KIWI_API_KEY")
     url = "https://kayak.p.rapidapi.com/flights"
     headers = {
         "X-RapidAPI-Key": api_key,
@@ -18,13 +18,16 @@ def get_prices():
             "adults": "3",
             "currency": "USD"
         }
-        response = requests.get(url, headers=headers, params=params).json()
-        print(f"{origin}-{destination} response:", response)  # 👈 Depuración
+        r = requests.get(url, headers=headers, params=params)
+        print(f"{origin}-{destination} raw response:", r.text)  # 👈 Depuración
+
         try:
+            response = r.json()
             price = float(response.get("price", -1))
             link = response.get("deep_link", "No disponible")
-        except (KeyError, TypeError, ValueError):
+        except Exception:
             price, link = -1, "No disponible"
+
         return {"price": price, "link": link}
 
     return {
