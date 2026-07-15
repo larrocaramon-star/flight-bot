@@ -1,4 +1,3 @@
-# analysis.py
 def analyze_prices(prices: dict) -> str:
     total = (
         prices["MVD-NYC"]["price"] +
