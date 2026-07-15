@@ -2,28 +2,28 @@ import os
 import requests
 
 def get_prices():
-    api_key = os.environ.get("KIWI_API_KEY")
-    url = "https://kiwi-com-cheap-flights.p.rapidapi.com/roundtrip"
+    api_key = os.environ.get("KIWI_API_KEY")  # tu secreto en GitHub
+    url = "https://kayak.p.rapidapi.com/flights"
     headers = {
         "X-RapidAPI-Key": api_key,
-        "X-RapidAPI-Host": "kiwi-com-cheap-flights.p.rapidapi.com"
+        "X-RapidAPI-Host": "kayak.p.rapidapi.com"
     }
 
-    def fetch_price(fly_from, fly_to, depart_date, return_date):
+    def fetch_price(origin, destination, depart_date, return_date):
         params = {
-            "from": fly_from,
-            "to": fly_to,
-            "depart": depart_date,
-            "return": return_date,
+            "origin": origin,
+            "destination": destination,
+            "depart_date": depart_date,
+            "return_date": return_date,
             "adults": "3",
             "currency": "USD"
         }
         response = requests.get(url, headers=headers, params=params).json()
-        print(f"{fly_from}-{fly_to} response:", response)  # 👈 Depuración
+        print(f"{origin}-{destination} response:", response)  # 👈 Depuración
         try:
-            price = float(response["price"])
+            price = float(response.get("price", -1))
             link = response.get("deep_link", "No disponible")
-        except (KeyError, TypeError):
+        except (KeyError, TypeError, ValueError):
             price, link = -1, "No disponible"
         return {"price": price, "link": link}
 
